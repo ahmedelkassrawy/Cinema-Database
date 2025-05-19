@@ -78,21 +78,18 @@ GO
 /****** Object:  Schema [booking]    Script Date: 5/19/2025 4:39:31 PM ******/
 CREATE SCHEMA [booking]
 GO
-/****** Object:  Schema [core]    Script Date: 5/19/2025 4:39:31 PM ******/
-CREATE SCHEMA [core]
-GO
 /****** Object:  Schema [reviews]    Script Date: 5/19/2025 4:39:31 PM ******/
 CREATE SCHEMA [reviews]
 GO
 /****** Object:  Schema [sales]    Script Date: 5/19/2025 4:39:31 PM ******/
 CREATE SCHEMA [sales]
 GO
-/****** Object:  Table [core].[Movies]    Script Date: 5/19/2025 4:39:31 PM ******/
+/****** Object:  Table [Movies]    Script Date: 5/19/2025 4:39:31 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-CREATE TABLE [core].[Movies](
+CREATE TABLE [Movies](
 	[movie_id] [int] NOT NULL,
 	[title] [varchar](40) NOT NULL,
 	[genre] [varchar](20) NOT NULL,
@@ -111,12 +108,12 @@ CREATE TABLE [core].[Movies](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [core].[Screenings]    Script Date: 5/19/2025 4:39:31 PM ******/
+/****** Object:  Table [Screenings]    Script Date: 5/19/2025 4:39:31 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-CREATE TABLE [core].[Screenings](
+CREATE TABLE [Screenings](
 	[Screening_id] [int] NOT NULL,
 	[Theater_id] [int] NULL,
 	[Movie_id] [int] NULL,
@@ -130,12 +127,12 @@ CREATE TABLE [core].[Screenings](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [core].[Theaters]    Script Date: 5/19/2025 4:39:31 PM ******/
+/****** Object:  Table [Theaters]    Script Date: 5/19/2025 4:39:31 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-CREATE TABLE [core].[Theaters](
+CREATE TABLE [Theaters](
 	[Theater_id] [int] NOT NULL,
 	[T_location] [varchar](100) NOT NULL,
 	[ScreenSize] [varchar](20) NOT NULL,
@@ -147,32 +144,91 @@ CREATE TABLE [core].[Theaters](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-ALTER TABLE [core].[Screenings]  WITH CHECK ADD  CONSTRAINT [movie_fk] FOREIGN KEY([Movie_id])
-REFERENCES [core].[Movies] ([movie_id])
+ALTER TABLE [Screenings]  WITH CHECK ADD  CONSTRAINT [movie_fk] FOREIGN KEY([Movie_id])
+REFERENCES [Movies] ([movie_id])
 GO
-ALTER TABLE [core].[Screenings] CHECK CONSTRAINT [movie_fk]
+ALTER TABLE [Screenings] CHECK CONSTRAINT [movie_fk]
 GO
-ALTER TABLE [core].[Screenings]  WITH CHECK ADD  CONSTRAINT [theatre_fk] FOREIGN KEY([Theater_id])
-REFERENCES [core].[Theaters] ([Theater_id])
+ALTER TABLE [Screenings]  WITH CHECK ADD  CONSTRAINT [theatre_fk] FOREIGN KEY([Theater_id])
+REFERENCES [Theaters] ([Theater_id])
 GO
-ALTER TABLE [core].[Screenings] CHECK CONSTRAINT [theatre_fk]
+ALTER TABLE [Screenings] CHECK CONSTRAINT [theatre_fk]
 GO
-ALTER TABLE [core].[Movies]  WITH CHECK ADD  CONSTRAINT [duration_ck] CHECK  (([duration]>'00:00:00'))
+ALTER TABLE [Movies]  WITH CHECK ADD  CONSTRAINT [duration_ck] CHECK  (([duration]>'00:00:00'))
 GO
-ALTER TABLE [core].[Movies] CHECK CONSTRAINT [duration_ck]
+ALTER TABLE [Movies] CHECK CONSTRAINT [duration_ck]
 GO
-ALTER TABLE [core].[Screenings]  WITH CHECK ADD  CONSTRAINT [seats_chk] CHECK  (([available_Seats]>(0)))
+ALTER TABLE [Screenings]  WITH CHECK ADD  CONSTRAINT [seats_chk] CHECK  (([available_Seats]>(0)))
 GO
-ALTER TABLE [core].[Screenings] CHECK CONSTRAINT [seats_chk]
+ALTER TABLE [Screenings] CHECK CONSTRAINT [seats_chk]
 GO
-ALTER TABLE [core].[Screenings]  WITH CHECK ADD  CONSTRAINT [ticket_ck] CHECK  (([ticket_price]>=(5)))
+ALTER TABLE [Screenings]  WITH CHECK ADD  CONSTRAINT [ticket_ck] CHECK  (([ticket_price]>=(5)))
 GO
-ALTER TABLE [core].[Screenings] CHECK CONSTRAINT [ticket_ck]
+ALTER TABLE [Screenings] CHECK CONSTRAINT [ticket_ck]
 GO
-ALTER TABLE [core].[Theaters]  WITH CHECK ADD  CONSTRAINT [seats_ck] CHECK  (([TotalSeats]>(0) AND [SeatingPerRow]>(0)))
+ALTER TABLE [Theaters]  WITH CHECK ADD  CONSTRAINT [seats_ck] CHECK  (([TotalSeats]>(0) AND [SeatingPerRow]>(0)))
 GO
-ALTER TABLE [core].[Theaters] CHECK CONSTRAINT [seats_ck]
+ALTER TABLE [Theaters] CHECK CONSTRAINT [seats_ck]
 GO
+
+-- Adding new tables without the core schema
+CREATE TABLE Customers
+(
+    customer_id INT PRIMARY KEY,
+    name VARCHAR(50),
+    email VARCHAR(100),
+    phone_number VARCHAR(15),
+    loyal_points INT
+);
+GO
+
+CREATE TABLE Bookings
+(
+    booking_id INT PRIMARY KEY,
+    seat_num INT,
+    payment_status BIT,
+    booking_timestamp DATETIME2,
+    customer_id INT,
+    screening_id INT,
+    FOREIGN KEY (customer_id) REFERENCES Customers(customer_id),
+    FOREIGN KEY (screening_id) REFERENCES Screenings(Screening_id)
+);
+GO
+
+CREATE TABLE Concessions
+(
+    product_id INT PRIMARY KEY,
+    product_name VARCHAR(50),
+    price INT,
+    stock_quantity INT,
+    category VARCHAR(20)
+);
+GO
+
+CREATE TABLE Reviews
+(
+    review_id INT PRIMARY KEY,
+    customer_id INT NOT NULL,
+    movie_id INT NOT NULL,
+    rating INT CHECK (rating >= 1 AND rating <= 5), 
+    review_text VARCHAR(150),
+    review_timestamp DATETIME2 DEFAULT GETDATE(),
+    FOREIGN KEY (customer_id) REFERENCES Customers(customer_id),
+    FOREIGN KEY (movie_id) REFERENCES Movies(movie_id)
+);
+GO
+
+CREATE TABLE [Booking-Concessions]
+(
+    BookingID INT NOT NULL,
+    ProductID INT NOT NULL,
+    Quantity INT NOT NULL CHECK (Quantity > 0), 
+    FOREIGN KEY (BookingID) REFERENCES Bookings(booking_id),
+    FOREIGN KEY (ProductID) REFERENCES Concessions(product_id),
+    PRIMARY KEY (BookingID, ProductID) 
+);
+GO
+
 USE [master]
 GO
 ALTER DATABASE [Cinema] SET  READ_WRITE 
