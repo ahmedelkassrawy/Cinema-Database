@@ -60,8 +60,6 @@ Deleting a customer removes their bookings, reviews, and concessions (cascade).
 ## ⚖️ Business Rules
 No screening may have a ticket price < $5.
 
-Customers must be ≥ 13 years old to book R-rated movies.
-
 Seat numbers must be unique per screening.
 
 Concession stock cannot go below zero.
@@ -197,7 +195,6 @@ Duration > 0
 
 StockQuantity ≥ 0
 
-Customers must be ≥ 13 years old to book R-rated movies
 
 Seat numbers must be unique per screening
 
