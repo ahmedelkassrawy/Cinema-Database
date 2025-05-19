@@ -1,0 +1,13 @@
+| CONSTRAINT_TYPE | CONSTRAINT_NAME | TABLE_SCHEMA | TABLE_NAME | COLUMN_NAME  | CHECK_CLAUSE                               | REFERENCED_CONSTRAINT | REFERENCED_TABLE | REFERENCED_COLUMN | DEFAULT_VALUE |
+|-----------------|-----------------|--------------|------------|--------------|--------------------------------------------|-----------------------|------------------|-------------------|---------------|
+| CHECK           | duration_ck     | core         | Movies     | NULL         | ([duration]>'00:00:00')                    | NULL                  | NULL             | NULL              | NULL          |
+| CHECK           | seats_chk       | core         | Screenings | NULL         | ([available_Seats]>(0))                    | NULL                  | NULL             | NULL              | NULL          |
+| CHECK           | ticket_ck       | core         | Screenings | NULL         | ([ticket_price]>=(5))                      | NULL                  | NULL             | NULL              | NULL          |
+| CHECK           | seats_ck        | core         | Theaters   | NULL         | ([TotalSeats]>(0) AND [SeatingPerRow]>(0)) | NULL                  | NULL             | NULL              | NULL          |
+| FOREIGN KEY     | movie_fk        | core         | Screenings | Movie_id     | NULL                                       | movies_pk             | Movies           | movie_id          | NULL          |
+| FOREIGN KEY     | theatre_fk      | core         | Screenings | Theater_id   | NULL                                       | theater_pk            | Theaters         | Theater_id        | NULL          |
+| PRIMARY KEY     | movies_pk       | core         | Movies     | movie_id     | NULL                                       | NULL                  | NULL             | NULL              | NULL          |
+| PRIMARY KEY     | Screenings_pk   | core         | Screenings | Screening_id | NULL                                       | NULL                  | NULL             | NULL              | NULL          |
+| PRIMARY KEY     | theater_pk      | core         | Theaters   | Theater_id   | NULL                                       | NULL                  | NULL             | NULL              | NULL          |
+| UNIQUE          | title_uq        | core         | Movies     | title        | NULL                                       | NULL                  | NULL             | NULL              | NULL          |
+| UNIQUE          | title_uq        | core         | Movies     | release_date | NULL                                       | NULL                  | NULL             | NULL              | NULL          |
