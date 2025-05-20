@@ -1,0 +1,5 @@
+SELECT m.title, s.Screening_id, t.T_location, s.start_time
+FROM Screenings s
+JOIN Movies m ON s.Movie_id = m.movie_id
+JOIN Theaters t ON s.Theater_id = t.Theater_id
+WHERE m.movie_id = 1;
