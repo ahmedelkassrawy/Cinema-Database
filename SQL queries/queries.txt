@@ -17,3 +17,17 @@ GROUP BY
     m.movie_id, m.title
 ORDER BY 
     Average_Rating DESC;
+--------------------
+SELECT TOP 1 with ties
+c.product_id,
+c.product_name,
+sum(bc.Quantity) as total_quantity_sold
+
+
+from BookingConcessions bc join Concessions c
+on bc.ProductID=c.product_id
+group by
+c.product_id,c.product_name
+order by 
+total_quantity_sold desc;
+
