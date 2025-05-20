@@ -3,3 +3,17 @@ FROM Screenings s
 JOIN Movies m ON s.Movie_id = m.movie_id
 JOIN Theaters t ON s.Theater_id = t.Theater_id
 WHERE m.movie_id = 1;
+----------------
+SELECT TOP 5 
+    m.title AS Movie_Title,
+    COUNT(r.review_id) AS Total_Reviews,
+    SUM(r.rating) AS Total_Rating_Sum,
+    AVG(r.rating * 1.0) AS Average_Rating 
+FROM 
+    Reviews r
+JOIN 
+    Movies m ON r.movie_id = m.movie_id
+GROUP BY 
+    m.movie_id, m.title
+ORDER BY 
+    Average_Rating DESC;
