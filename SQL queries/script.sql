@@ -214,7 +214,7 @@ CREATE TABLE [Reviews](
         FOREIGN KEY ([movie_id]) REFERENCES [Movies] ([movie_id]) ON DELETE SET NULL
 )
 GO
-CREATE TABLE [Booking-Concessions](
+CREATE TABLE [BookingConcessions](
     [BookingID] [int] NOT NULL,
     [ProductID] [int] NOT NULL,
     [Quantity] [int] NOT NULL CHECK ([Quantity] > 0),
@@ -255,7 +255,7 @@ END;
 GO
 /****** Object:  Trigger [dbo].[UpdateStock]    Script Date: 5/20/2025 ******/
 CREATE TRIGGER [dbo].[UpdateStock]
-ON [dbo].[Booking-Concessions]
+ON [dbo].[BookingConcessions]
 AFTER INSERT 
 AS 
 BEGIN
