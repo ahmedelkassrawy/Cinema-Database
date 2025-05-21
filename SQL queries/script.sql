@@ -1,7 +1,14 @@
 USE [master]
 GO
-/****** Object:  Database [Cinema]    Script Date: 5/21/2025 5:54:00 PM ******/
+/****** Object:  Database [Cinema]    Script Date: 5/21/2025 6:45:26 PM ******/
 CREATE DATABASE [Cinema]
+ CONTAINMENT = NONE
+ ON  PRIMARY 
+( NAME = N'Cinema_Data', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL16.MSSQLSERVER\MSSQL\DATA\Cinema.mdf' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 1024KB )
+ LOG ON 
+( NAME = N'Cinema_Log', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL16.MSSQLSERVER\MSSQL\DATA\Cinema.ldf' , SIZE = 8192KB , MAXSIZE = 2048GB , FILEGROWTH = 10%)
+ WITH CATALOG_COLLATION = DATABASE_DEFAULT, LEDGER = OFF
+GO
 ALTER DATABASE [Cinema] SET COMPATIBILITY_LEVEL = 160
 GO
 IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
@@ -77,7 +84,7 @@ ALTER DATABASE [Cinema] SET QUERY_STORE (OPERATION_MODE = READ_WRITE, CLEANUP_PO
 GO
 USE [Cinema]
 GO
-/****** Object:  Table [dbo].[BookingConcessions]    Script Date: 5/21/2025 5:54:00 PM ******/
+/****** Object:  Table [dbo].[BookingConcessions]    Script Date: 5/21/2025 6:45:26 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -93,13 +100,13 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Bookings]    Script Date: 5/21/2025 5:54:00 PM ******/
+/****** Object:  Table [dbo].[Bookings]    Script Date: 5/21/2025 6:45:26 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[Bookings](
-	[booking_id] [int] IDENTITY(1,1) NOT NULL,
+	[booking_id] [int] NOT NULL,
 	[seat_number] [int] NOT NULL,
 	[payment_status] [bit] NOT NULL,
 	[booking_timestamp] [datetime2](7) NULL,
@@ -111,13 +118,13 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[ConcessionRevenues]    Script Date: 5/21/2025 5:54:00 PM ******/
+/****** Object:  Table [dbo].[ConcessionRevenues]    Script Date: 5/21/2025 6:45:26 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[ConcessionRevenues](
-	[product_id] [int] IDENTITY(1,1) NOT NULL,
+	[product_id] [int] NOT NULL,
 	[total_revenue] [decimal](12, 2) NULL,
 	[last_updated] [datetime2](7) NULL,
  CONSTRAINT [PK_ConcessionRevenues] PRIMARY KEY CLUSTERED 
@@ -126,13 +133,13 @@ CREATE TABLE [dbo].[ConcessionRevenues](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Concessions]    Script Date: 5/21/2025 5:54:00 PM ******/
+/****** Object:  Table [dbo].[Concessions]    Script Date: 5/21/2025 6:45:26 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[Concessions](
-	[product_id] [int] IDENTITY(1,1) NOT NULL,
+	[product_id] [int] NOT NULL,
 	[product_name] [varchar](50) NULL,
 	[price] [decimal](10, 2) NULL,
 	[stock_quantity] [int] NULL,
@@ -143,7 +150,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Customers]    Script Date: 5/21/2025 5:54:00 PM ******/
+/****** Object:  Table [dbo].[Customers]    Script Date: 5/21/2025 6:45:26 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -160,13 +167,13 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[MovieRevenues]    Script Date: 5/21/2025 5:54:00 PM ******/
+/****** Object:  Table [dbo].[MovieRevenues]    Script Date: 5/21/2025 6:45:26 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[MovieRevenues](
-	[movie_id] [int] IDENTITY(1,1) NOT NULL,
+	[movie_id] [int] NOT NULL,
 	[total_revenue] [decimal](12, 2) NULL,
 	[last_updated] [datetime2](7) NULL,
  CONSTRAINT [PK_MovieRevenues] PRIMARY KEY CLUSTERED 
@@ -175,13 +182,13 @@ CREATE TABLE [dbo].[MovieRevenues](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Movies]    Script Date: 5/21/2025 5:54:00 PM ******/
+/****** Object:  Table [dbo].[Movies]    Script Date: 5/21/2025 6:45:26 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[Movies](
-	[movie_id] [int] IDENTITY(1,1) NOT NULL,
+	[movie_id] [int] NOT NULL,
 	[title] [varchar](40) NOT NULL,
 	[genre] [varchar](20) NOT NULL,
 	[duration] [time](7) NOT NULL,
@@ -194,13 +201,13 @@ CREATE TABLE [dbo].[Movies](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Reviews]    Script Date: 5/21/2025 5:54:00 PM ******/
+/****** Object:  Table [dbo].[Reviews]    Script Date: 5/21/2025 6:45:26 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[Reviews](
-	[review_id] [int] IDENTITY(1,1) NOT NULL,
+	[review_id] [int] NOT NULL,
 	[customer_id] [int] NOT NULL,
 	[movie_id] [int] NULL,
 	[rating] [int] NULL,
@@ -212,13 +219,13 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Screenings]    Script Date: 5/21/2025 5:54:00 PM ******/
+/****** Object:  Table [dbo].[Screenings]    Script Date: 5/21/2025 6:45:26 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[Screenings](
-	[Screening_id] [int] IDENTITY(1,1) NOT NULL,
+	[Screening_id] [int] NOT NULL,
 	[Theater_id] [int] NOT NULL,
 	[Movie_id] [int] NULL,
 	[start_time] [time](7) NOT NULL,
@@ -231,13 +238,13 @@ CREATE TABLE [dbo].[Screenings](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[TheaterRevenues]    Script Date: 5/21/2025 5:54:00 PM ******/
+/****** Object:  Table [dbo].[TheaterRevenues]    Script Date: 5/21/2025 6:45:26 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[TheaterRevenues](
-	[theater_id] [int] IDENTITY(1,1) NOT NULL,
+	[theater_id] [int] NOT NULL,
 	[total_revenue] [decimal](18, 2) NOT NULL,
 PRIMARY KEY CLUSTERED 
 (
@@ -245,13 +252,13 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Theaters]    Script Date: 5/21/2025 5:54:00 PM ******/
+/****** Object:  Table [dbo].[Theaters]    Script Date: 5/21/2025 6:45:26 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[Theaters](
-	[Theater_id] [int] IDENTITY(1,1) NOT NULL,
+	[Theater_id] [int] NOT NULL,
 	[T_location] [varchar](100) NOT NULL,
 	[ScreenSize] [varchar](20) NOT NULL,
 	[TotalSeats] [int] NOT NULL,
@@ -262,8 +269,21 @@ CREATE TABLE [dbo].[Theaters](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Insert into [dbo].[Bookings] with IDENTITY_INSERT ******/
-SET IDENTITY_INSERT [dbo].[Bookings] ON
+INSERT [dbo].[BookingConcessions] ([BookingID], [ProductID], [Quantity]) VALUES (1, 1, 3)
+GO
+INSERT [dbo].[BookingConcessions] ([BookingID], [ProductID], [Quantity]) VALUES (1, 3, 2)
+GO
+INSERT [dbo].[BookingConcessions] ([BookingID], [ProductID], [Quantity]) VALUES (2, 2, 1)
+GO
+INSERT [dbo].[BookingConcessions] ([BookingID], [ProductID], [Quantity]) VALUES (2, 4, 2)
+GO
+INSERT [dbo].[BookingConcessions] ([BookingID], [ProductID], [Quantity]) VALUES (4, 5, 1)
+GO
+INSERT [dbo].[BookingConcessions] ([BookingID], [ProductID], [Quantity]) VALUES (5, 1, 1)
+GO
+INSERT [dbo].[BookingConcessions] ([BookingID], [ProductID], [Quantity]) VALUES (6, 3, 2)
+GO
+INSERT [dbo].[BookingConcessions] ([BookingID], [ProductID], [Quantity]) VALUES (7, 7, 1)
 GO
 INSERT [dbo].[Bookings] ([booking_id], [seat_number], [payment_status], [booking_timestamp], [customer_id], [screening_id]) VALUES (1, 105, 1, CAST(N'2025-04-04T15:30:00.0000000' AS DateTime2), 1, 1)
 GO
@@ -341,28 +361,6 @@ INSERT [dbo].[Bookings] ([booking_id], [seat_number], [payment_status], [booking
 GO
 INSERT [dbo].[Bookings] ([booking_id], [seat_number], [payment_status], [booking_timestamp], [customer_id], [screening_id]) VALUES (4371, 115, 1, NULL, 41, 1)
 GO
-SET IDENTITY_INSERT [dbo].[Bookings] OFF
-GO
-/****** Insert into [dbo].[BookingConcessions] ******/
-INSERT [dbo].[BookingConcessions] ([BookingID], [ProductID], [Quantity]) VALUES (1, 1, 3)
-GO
-INSERT [dbo].[BookingConcessions] ([BookingID], [ProductID], [Quantity]) VALUES (1, 3, 2)
-GO
-INSERT [dbo].[BookingConcessions] ([BookingID], [ProductID], [Quantity]) VALUES (2, 2, 1)
-GO
-INSERT [dbo].[BookingConcessions] ([BookingID], [ProductID], [Quantity]) VALUES (2, 4, 2)
-GO
-INSERT [dbo].[BookingConcessions] ([BookingID], [ProductID], [Quantity]) VALUES (4, 5, 1)
-GO
-INSERT [dbo].[BookingConcessions] ([BookingID], [ProductID], [Quantity]) VALUES (5, 1, 1)
-GO
-INSERT [dbo].[BookingConcessions] ([BookingID], [ProductID], [Quantity]) VALUES (6, 3, 2)
-GO
-INSERT [dbo].[BookingConcessions] ([BookingID], [ProductID], [Quantity]) VALUES (7, 7, 1)
-GO
-/****** Insert into [dbo].[ConcessionRevenues] with IDENTITY_INSERT ******/
-SET IDENTITY_INSERT [dbo].[ConcessionRevenues] ON
-GO
 INSERT [dbo].[ConcessionRevenues] ([product_id], [total_revenue], [last_updated]) VALUES (1, CAST(225.00 AS Decimal(12, 2)), CAST(N'2025-05-20T23:12:38.9866667' AS DateTime2))
 GO
 INSERT [dbo].[ConcessionRevenues] ([product_id], [total_revenue], [last_updated]) VALUES (2, CAST(60.00 AS Decimal(12, 2)), CAST(N'2025-05-20T23:12:38.9866667' AS DateTime2))
@@ -374,11 +372,6 @@ GO
 INSERT [dbo].[ConcessionRevenues] ([product_id], [total_revenue], [last_updated]) VALUES (5, CAST(40.00 AS Decimal(12, 2)), CAST(N'2025-05-20T23:12:38.9866667' AS DateTime2))
 GO
 INSERT [dbo].[ConcessionRevenues] ([product_id], [total_revenue], [last_updated]) VALUES (7, CAST(45.00 AS Decimal(12, 2)), CAST(N'2025-05-20T23:12:38.9866667' AS DateTime2))
-GO
-SET IDENTITY_INSERT [dbo].[ConcessionRevenues] OFF
-GO
-/****** Insert into [dbo].[Concessions] with IDENTITY_INSERT ******/
-SET IDENTITY_INSERT [dbo].[Concessions] ON
 GO
 INSERT [dbo].[Concessions] ([product_id], [product_name], [price], [stock_quantity], [category]) VALUES (1, N'Popcorn Large', CAST(75.00 AS Decimal(10, 2)), 200, N'Snacks')
 GO
@@ -394,18 +387,6 @@ INSERT [dbo].[Concessions] ([product_id], [product_name], [price], [stock_quanti
 GO
 INSERT [dbo].[Concessions] ([product_id], [product_name], [price], [stock_quantity], [category]) VALUES (7, N'Hot Dog', CAST(45.00 AS Decimal(10, 2)), 120, N'Snacks')
 GO
-SET IDENTITY_INSERT [dbo].[Concessions] OFF
-GO
-/****** Insert into [dbo].[Customers] with IDENTITY_INSERT ******/
-SET IDENTITY_INSERT [dbo].[Customers] ON
-GO
-INSERT [dbo].[Customers] ([customer_id], [name], [email], [phone_number], [loyal_points]) VALUES (211, N'Tarek Fathy', N'tarek.fathy211@example.com', N'01100001477', 136)
-GO
-SET IDENTITY_INSERT [dbo].[Customers] OFF
-GO
-/****** Insert into [dbo].[MovieRevenues] with IDENTITY_INSERT ******/
-SET IDENTITY_INSERT [dbo].[MovieRevenues] ON
-GO
 INSERT [dbo].[MovieRevenues] ([movie_id], [total_revenue], [last_updated]) VALUES (1, CAST(445.00 AS Decimal(12, 2)), CAST(N'2025-05-20T23:04:43.8166667' AS DateTime2))
 GO
 INSERT [dbo].[MovieRevenues] ([movie_id], [total_revenue], [last_updated]) VALUES (2, CAST(95.00 AS Decimal(12, 2)), CAST(N'2025-05-20T23:04:43.8166667' AS DateTime2))
@@ -416,11 +397,6 @@ INSERT [dbo].[MovieRevenues] ([movie_id], [total_revenue], [last_updated]) VALUE
 GO
 INSERT [dbo].[MovieRevenues] ([movie_id], [total_revenue], [last_updated]) VALUES (5, CAST(90.00 AS Decimal(12, 2)), CAST(N'2025-05-20T23:04:43.8166667' AS DateTime2))
 GO
-SET IDENTITY_INSERT [dbo].[MovieRevenues] OFF
-GO
-/****** Insert into [dbo].[Movies] with IDENTITY_INSERT ******/
-SET IDENTITY_INSERT [dbo].[Movies] ON
-GO
 INSERT [dbo].[Movies] ([movie_id], [title], [genre], [duration], [rating], [release_date], [Synopsis]) VALUES (1, N'Inception', N'Action/Sci-Fi', CAST(N'02:28:00' AS Time), N'8.8', CAST(N'2010-07-16' AS Date), N'A thief who enters the dreams of others to steal secrets is given the inverse task of planting an idea into a C.E.O.''s mind.')
 GO
 INSERT [dbo].[Movies] ([movie_id], [title], [genre], [duration], [rating], [release_date], [Synopsis]) VALUES (2, N'The Dark Knight', N'Action/Crime', CAST(N'02:32:00' AS Time), N'9.0', CAST(N'2008-07-18' AS Date), N'When the menace known as the Joker wreaks havoc on the people of Gotham, Batman must accept one of the greatest psychological tests.')
@@ -430,11 +406,6 @@ GO
 INSERT [dbo].[Movies] ([movie_id], [title], [genre], [duration], [rating], [release_date], [Synopsis]) VALUES (4, N'Avengers: Endgame', N'Action/Sci-Fi', CAST(N'03:01:00' AS Time), N'8.4', CAST(N'2019-04-26' AS Date), N'After the devastating events of Avengers: Infinity War, the universe is in ruins. With the help of remaining allies, the Avengers assemble once more.')
 GO
 INSERT [dbo].[Movies] ([movie_id], [title], [genre], [duration], [rating], [release_date], [Synopsis]) VALUES (5, N'Joker', N'Crime/Drama', CAST(N'02:02:00' AS Time), N'9.0', CAST(N'2019-10-04' AS Date), N'A mentally troubled stand-up comedian embarks on a downward spiral of revolution and chaos in the form of a person known as the Joker.')
-GO
-SET IDENTITY_INSERT [dbo].[Movies] OFF
-GO
-/****** Insert into [dbo].[Reviews] with IDENTITY_INSERT ******/
-SET IDENTITY_INSERT [dbo].[Reviews] ON
 GO
 INSERT [dbo].[Reviews] ([review_id], [customer_id], [movie_id], [rating], [review_text], [review_timestamp]) VALUES (1, 1, 1, 5, N'Inception was mind-blowing! The visuals and plot twists were amazing.', CAST(N'2025-05-19T23:15:23.9000000' AS DateTime2))
 GO
@@ -496,11 +467,6 @@ INSERT [dbo].[Reviews] ([review_id], [customer_id], [movie_id], [rating], [revie
 GO
 INSERT [dbo].[Reviews] ([review_id], [customer_id], [movie_id], [rating], [review_text], [review_timestamp]) VALUES (125, 36, 5, 4, N'Haunting performance by the lead.', CAST(N'2025-05-20T23:59:43.5100000' AS DateTime2))
 GO
-SET IDENTITY_INSERT [dbo].[Reviews] OFF
-GO
-/****** Insert into [dbo].[Screenings] with IDENTITY_INSERT ******/
-SET IDENTITY_INSERT [dbo].[Screenings] ON
-GO
 INSERT [dbo].[Screenings] ([Screening_id], [Theater_id], [Movie_id], [start_time], [end_time], [ticket_price], [available_Seats]) VALUES (1, 1, 1, CAST(N'10:00:00' AS Time), CAST(N'12:30:00' AS Time), CAST(90.00 AS Decimal(10, 2)), 138)
 GO
 INSERT [dbo].[Screenings] ([Screening_id], [Theater_id], [Movie_id], [start_time], [end_time], [ticket_price], [available_Seats]) VALUES (2, 1, 2, CAST(N'14:00:00' AS Time), CAST(N'16:40:00' AS Time), CAST(95.00 AS Decimal(10, 2)), 130)
@@ -517,17 +483,7 @@ INSERT [dbo].[Screenings] ([Screening_id], [Theater_id], [Movie_id], [start_time
 GO
 INSERT [dbo].[Screenings] ([Screening_id], [Theater_id], [Movie_id], [start_time], [end_time], [ticket_price], [available_Seats]) VALUES (53, 3, 3, CAST(N'12:30:00' AS Time), CAST(N'01:00:00' AS Time), CAST(61.00 AS Decimal(10, 2)), 55)
 GO
-SET IDENTITY_INSERT [dbo].[Screenings] OFF
-GO
-/****** Insert into [dbo].[TheaterRevenues] with IDENTITY_INSERT ******/
-SET IDENTITY_INSERT [dbo].[TheaterRevenues] ON
-GO
 INSERT [dbo].[TheaterRevenues] ([theater_id], [total_revenue]) VALUES (1, CAST(90.00 AS Decimal(18, 2)))
-GO
-SET IDENTITY_INSERT [dbo].[TheaterRevenues] OFF
-GO
-/****** Insert into [dbo].[Theaters] with IDENTITY_INSERT ******/
-SET IDENTITY_INSERT [dbo].[Theaters] ON
 GO
 INSERT [dbo].[Theaters] ([Theater_id], [T_location], [ScreenSize], [TotalSeats], [SeatingPerRow]) VALUES (1, N'Cairo Festival, Cairo', N'IMAX', 200, 20)
 GO
@@ -539,9 +495,7 @@ INSERT [dbo].[Theaters] ([Theater_id], [T_location], [ScreenSize], [TotalSeats],
 GO
 INSERT [dbo].[Theaters] ([Theater_id], [T_location], [ScreenSize], [TotalSeats], [SeatingPerRow]) VALUES (5, N'Mall Of Tanta', N'Standard', 100, 10)
 GO
-SET IDENTITY_INSERT [dbo].[Theaters] OFF
-GO
-/****** Object:  Index [seat_screen_uq]    Script Date: 5/21/2025 5:54:00 PM ******/
+/****** Object:  Index [seat_screen_uq]    Script Date: 5/21/2025 6:45:26 PM ******/
 ALTER TABLE [dbo].[Bookings] ADD  CONSTRAINT [seat_screen_uq] UNIQUE NONCLUSTERED 
 (
 	[seat_number] ASC,
@@ -550,7 +504,7 @@ ALTER TABLE [dbo].[Bookings] ADD  CONSTRAINT [seat_screen_uq] UNIQUE NONCLUSTERE
 GO
 SET ANSI_PADDING ON
 GO
-/****** Object:  Index [email_uq]    Script Date: 5/21/2025 5:54:00 PM ******/
+/****** Object:  Index [email_uq]    Script Date: 5/21/2025 6:45:26 PM ******/
 ALTER TABLE [dbo].[Customers] ADD  CONSTRAINT [email_uq] UNIQUE NONCLUSTERED 
 (
 	[email] ASC
@@ -558,7 +512,7 @@ ALTER TABLE [dbo].[Customers] ADD  CONSTRAINT [email_uq] UNIQUE NONCLUSTERED
 GO
 SET ANSI_PADDING ON
 GO
-/****** Object:  Index [phone_uq]    Script Date: 5/21/2025 5:54:00 PM ******/
+/****** Object:  Index [phone_uq]    Script Date: 5/21/2025 6:45:26 PM ******/
 ALTER TABLE [dbo].[Customers] ADD  CONSTRAINT [phone_uq] UNIQUE NONCLUSTERED 
 (
 	[phone_number] ASC
@@ -566,7 +520,7 @@ ALTER TABLE [dbo].[Customers] ADD  CONSTRAINT [phone_uq] UNIQUE NONCLUSTERED
 GO
 SET ANSI_PADDING ON
 GO
-/****** Object:  Index [title_date_uq]    Script Date: 5/21/2025 5:54:00 PM ******/
+/****** Object:  Index [title_date_uq]    Script Date: 5/21/2025 6:45:26 PM ******/
 ALTER TABLE [dbo].[Movies] ADD  CONSTRAINT [title_date_uq] UNIQUE NONCLUSTERED 
 (
 	[title] ASC,
@@ -575,7 +529,7 @@ ALTER TABLE [dbo].[Movies] ADD  CONSTRAINT [title_date_uq] UNIQUE NONCLUSTERED
 GO
 SET ANSI_PADDING ON
 GO
-/****** Object:  Index [location_uq]    Script Date: 5/21/2025 5:54:00 PM ******/
+/****** Object:  Index [location_uq]    Script Date: 5/21/2025 6:45:26 PM ******/
 ALTER TABLE [dbo].[Theaters] ADD  CONSTRAINT [location_uq] UNIQUE NONCLUSTERED 
 (
 	[T_location] ASC
@@ -604,12 +558,6 @@ REFERENCES [dbo].[Concessions] ([product_id])
 GO
 ALTER TABLE [dbo].[BookingConcessions] CHECK CONSTRAINT [product_fk_concessions]
 GO
-ALTER TABLE [dbo].[Bookings]  WITH CHECK ADD  CONSTRAINT [customer_fk_bookings] FOREIGN KEY([customer_id])
-REFERENCES [dbo].[Customers] ([customer_id])
-ON DELETE CASCADE
-GO
-ALTER TABLE [dbo].[Bookings] CHECK CONSTRAINT [customer_fk_bookings]
-GO
 ALTER TABLE [dbo].[Bookings]  WITH CHECK ADD  CONSTRAINT [screening_fk_bookings] FOREIGN KEY([screening_id])
 REFERENCES [dbo].[Screenings] ([Screening_id])
 GO
@@ -619,12 +567,6 @@ ALTER TABLE [dbo].[ConcessionRevenues]  WITH CHECK ADD  CONSTRAINT [FK_Concessio
 REFERENCES [dbo].[Concessions] ([product_id])
 GO
 ALTER TABLE [dbo].[ConcessionRevenues] CHECK CONSTRAINT [FK_ConcessionRevenues_Concessions]
-GO
-ALTER TABLE [dbo].[Reviews]  WITH CHECK ADD  CONSTRAINT [customer_fk_reviews] FOREIGN KEY([customer_id])
-REFERENCES [dbo].[Customers] ([customer_id])
-ON DELETE CASCADE
-GO
-ALTER TABLE [dbo].[Reviews] CHECK CONSTRAINT [customer_fk_reviews]
 GO
 ALTER TABLE [dbo].[Reviews]  WITH CHECK ADD  CONSTRAINT [movie_fk_reviews] FOREIGN KEY([movie_id])
 REFERENCES [dbo].[Movies] ([movie_id])
