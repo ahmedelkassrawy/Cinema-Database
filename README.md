@@ -69,8 +69,6 @@ Find all current screenings of a specific movie at a location.
 
 List top 5 highest-rated movies in the past month.
 
-Find all bookings by customer email.
-
 Calculate total revenue from tickets and concessions per theater.
 
 Identify the most popular genre by bookings.
