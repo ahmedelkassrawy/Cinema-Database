@@ -67,7 +67,7 @@ Concession stock cannot go below zero.
 ## 📊 Key Queries
 Find all current screenings of a specific movie at a location.
 
-List top 5 highest-rated movies in the past month.
+List top 5 highest-rated movies.
 
 Calculate total revenue from tickets and concessions per theater.
 
