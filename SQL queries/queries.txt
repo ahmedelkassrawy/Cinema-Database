@@ -30,4 +30,28 @@ group by
 c.product_id,c.product_name
 order by 
 total_quantity_sold desc;
+--------------------
+SELECT 
+	m.title,
+    t.Theater_id,
+    t.T_location AS Theater_Location,
+    s.show_date,
+    s.start_time,
+    s.end_time,
+    s.ticket_price,
+    s.available_Seats
+FROM 
+    Screenings s
+JOIN 
+    Theaters t ON s.Theater_id = t.Theater_id,
+	Movies m 
+JOIN 
+    Screenings sc on m.movie_id=sc.Movie_id
 
+WHERE 
+    m.Movie_id = 2
+    AND s.show_date = '2025-05-21'
+    AND s.available_Seats > 0
+ORDER BY 
+   s.ticket_price desc, 
+	t.T_location, s.start_time;
