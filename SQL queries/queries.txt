@@ -6,9 +6,8 @@ WHERE m.movie_id = 1;
 ----------------
 SELECT TOP 5 
     m.title AS Movie_Title,
-    COUNT(r.review_id) AS Total_Reviews,
-    SUM(r.rating) AS Total_Rating_Sum,
-    AVG(r.rating * 1.0) AS Average_Rating 
+    AVG(r.rating * 1.0) AS Average_Rating ,
+	SUM(r.rating) AS Total_Rating
 FROM 
     Reviews r
 JOIN 
