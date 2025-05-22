@@ -69,8 +69,6 @@ Find all current screenings of a specific movie at a location.
 
 List top 5 highest-rated movies.
 
-Calculate total revenue from tickets and concessions per theater.
-
 Identify the most popular genre by bookings.
 
 List available theaters for a specific movie on a given date.
